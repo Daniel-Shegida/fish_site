@@ -137,30 +137,14 @@ class _MapWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 255),
+      padding: const EdgeInsets.only(left: 255),
       child: Column(
         children: [
           InkWell(
             onTap: () {
-              showDialogFunc(
+              _showHeroesDialog(
                 context,
                 heroes,
-                // [
-                //   Hero1(
-                //       imagePath: 'imagePath',
-                //       name: 'name',
-                //       position: 'position',
-                //       location: 'location',
-                //       desc: 'desc',
-                //       quote: 'quote')
-                // ],
-                // Hero1(
-                //     imagePath: ProjectPictures.getFoto(1),
-                //     name: 'name',
-                //     position: 'position',
-                //     location: 'location',
-                //     desc: 'desc',
-                //     quote: 'quote'),
                 itemScrollController,
                 itemPositionsListener,
               );
@@ -177,38 +161,41 @@ class _MapWidget extends StatelessWidget {
       ),
     );
   }
+
+  /// показывает диалог героев
+  _showHeroesDialog(
+      BuildContext context,
+      List<FloorHero> heroes,
+      ItemScrollController itemScrollController,
+      ItemPositionsListener itemPositionsListener) {
+    return showDialog(
+        context: context,
+        builder: (context) => Dialog(
+          child: _FloorsHeroesWidget(
+            heroes: heroes,
+          ),
+        ));
+  }
 }
 
-showDialogFunc(
-    BuildContext context,
-    List<FloorHero> heroes,
-    ItemScrollController itemScrollController,
-    ItemPositionsListener itemPositionsListener) {
-  return showDialog(
-      context: context,
-      builder: (context) => Dialog(
-            child: _FloorsHeroesWidget(
-              heroes: heroes,
-            ),
-          ));
-}
 
 class _FloorsHeroesWidget extends StatefulWidget {
   static int duration = 1;
 
   final List<FloorHero> heroes;
 
-  _FloorsHeroesWidget({required this.heroes, Key? key}) : super(key: key);
+  const _FloorsHeroesWidget({required this.heroes, Key? key}) : super(key: key);
 
   @override
   State<_FloorsHeroesWidget> createState() => _FloorsHeroesWidgetState();
 }
 
+/// диалог героев с контроллером для перемещения списка по ивентам
+/// (контролеры не диспозятся)
 class _FloorsHeroesWidgetState extends State<_FloorsHeroesWidget> {
-  final ItemScrollController itemScrollController = ItemScrollController();
+  late final ItemScrollController itemScrollController;
 
-  final ItemPositionsListener itemPositionsListener =
-      ItemPositionsListener.create();
+  late final ItemPositionsListener itemPositionsListener;
 
   int heroIndex = 0;
 
@@ -233,6 +220,17 @@ class _FloorsHeroesWidgetState extends State<_FloorsHeroesWidget> {
   bool _isScrollableLeft() {
     return widget.heroes.length > 3 && heroIndex > 0;
   }
+
+  @override
+  void initState() {
+     itemScrollController = ItemScrollController();
+
+     itemPositionsListener =
+    ItemPositionsListener.create();
+
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -292,7 +290,7 @@ class _FloorsHeroesWidgetState extends State<_FloorsHeroesWidget> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 60,
           ),
           Expanded(
@@ -332,9 +330,20 @@ class _FloorsHeroesWidgetState extends State<_FloorsHeroesWidget> {
   }
 }
 
+/// кнопки для скрола героев
+/// isLeft поворачивает виджет на 90 градусов, в true - левые
+/// isVisible делает виджет нивидимым, но занимающим место в true - прозарчные
+/// scroll - о
 class _ScrollWidget extends StatelessWidget {
+  /// isLeft поворачивает виджет на 90 градусов, в true - левые
   final bool isLeft;
+
+  /// isVisible делает виджет нивидимым, но занимающим место в true - прозарчные
+
   final bool isVisible;
+
+  /// scroll - функция вызываемая на нажатие на кнопку
+  /// (ожидается, что передается функция скролла списка)
   final VoidCallback scroll;
 
   const _ScrollWidget(
@@ -369,18 +378,7 @@ class _ScrollWidget extends StatelessWidget {
   }
 }
 
-class test extends StatelessWidget {
-  int test1 = 0;
-  final VoidCallback itemScrollController;
-
-  test({required this.itemScrollController, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(onPressed: itemScrollController, child: Text("dadq"));
-  }
-}
-
+/// карточка 1 героя на экране этажей
 class _HeroFloorsCard extends StatelessWidget {
   final FloorHero hero;
 
@@ -388,7 +386,7 @@ class _HeroFloorsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 250,
       child: Column(
         children: [
@@ -398,26 +396,23 @@ class _HeroFloorsCard extends StatelessWidget {
             width: 250,
             fit: BoxFit.fill,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Text(
             hero.name,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
               fontFamily: 'Montserrat',
               color: ProjectColors.mainDark,
             ),
           ),
-          // SizedBox(
-          //   height: 8,
-          // ),
           Text(
             hero.position,
             textAlign: TextAlign.start,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
               fontFamily: 'Montserrat',
