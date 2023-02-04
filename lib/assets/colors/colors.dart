@@ -9,10 +9,6 @@ abstract class ProjectColors {
   static const Color textSecondary = _darkGrey;
   static const Color mapAccent = _blue;
   static const Color primaryMuseumSite = _purple;
-
-
-  static const Color searchColor = _lightGrey;
-
 // Main palette
 
   static const Color _oxfordBlue = Color(0xFF2E4083);
