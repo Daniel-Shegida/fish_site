@@ -35,7 +35,6 @@ flutter:
         - asset: assets/fonts/PlayfairDisplay-Italic-VariableFont_wght.ttf
 
   assets:
-    - assets/icons/logo.svg
     - assets/icons/
     - assets/video/
 
