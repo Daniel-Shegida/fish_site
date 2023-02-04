@@ -32,6 +32,18 @@ class MainScreen extends StatelessWidget {
                 height: 50,
               ),
               const SizedBox(
+                width: 746,
+                child: Text(
+                  ProjectStrings.briefDesc,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontFamily: 'Montserrat',
+                    color: ProjectColors.mainDark,
+                  ),
+                ),
+              ),
+              const SizedBox(
                 height: 100,
               ),
               const _ButtonMainRow(),
